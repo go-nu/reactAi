@@ -1,8 +1,36 @@
 {
   "employees": [
-    {"id":1, "name": "John", "age": 35, "job": "frontend", "language": "react", "pay": 1},
-    {"id":2, "name": "Peter", "age": 35, "job": "frontend", "language": "react", "pay": 1},
-    {"id":3, "name": "Sue", "age": 35, "job": "frontend", "language": "react", "pay": 1},
-    {"id":4, "name": "Susan", "age": 35, "job": "frontend", "language": "react", "pay": 1}
+    {
+      "id": 1,
+      "name": "John",
+      "age": 35,
+      "job": "frontend",
+      "language": "react",
+      "pay": 1
+    },
+    {
+      "id": 2,
+      "name": "Peter",
+      "age": 35,
+      "job": "frontend",
+      "language": "react",
+      "pay": 1
+    },
+    {
+      "id": 3,
+      "name": "Sue",
+      "age": 35,
+      "job": "frontend",
+      "language": "react",
+      "pay": 1
+    },
+    {
+      "id": 4,
+      "name": "Susan",
+      "age": 35,
+      "job": "frontend",
+      "language": "react",
+      "pay": 1
+    }
   ]
 }
