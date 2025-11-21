@@ -22,12 +22,25 @@ export const Style:React.CSSProperties = {
 const Main = () => {
     const {mode, selectedId, modes} = useSelector((state: RootState) => state.emp);
     const dispatch = useDispatch<RootDispatch>();
-    const handleModeChange = (id:Mode) => {
-        dispatch(handleMode(id));
-        if (mode === "delete" && typeof selectedId === "number") {
-            dispatch(fetchDeleteEmployeeInfoById(selectedId))
+    const handleModeChange = (modeId: Mode) => {
+        // 1) 먼저 모드 변경
+        dispatch(handleMode(modeId));
+
+        // 2) 삭제 모드 버튼을 눌렀을 때 처리
+        if (modeId === "delete") {
+            if (selectedId == null) {
+                alert("삭제할 직원을 먼저 선택해 주세요.");
+                return;
+            }
+
+            // 필요하면 confirm 추가
+            const ok = window.confirm(`정말 ID ${selectedId} 직원을 삭제하시겠습니까?`);
+            if (!ok) return;
+
+            // 3) 선택된 직원 ID로 삭제 API 호출
+            dispatch(fetchDeleteEmployeeInfoById(selectedId));
         }
-    }
+    };
 
     return (
         <>

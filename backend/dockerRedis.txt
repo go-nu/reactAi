@@ -1,0 +1,8 @@
+redis
+
+docker run --name redis-server -p 6379:6379 -d redis
+
+
+MongoDB
+
+docker run -d -p 27017:27017 --name my-mongo mongo

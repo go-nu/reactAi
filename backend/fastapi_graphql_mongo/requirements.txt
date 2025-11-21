@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+strawberry-graphql
+pymongo
+motor
+python-dotenv
+beanie
