@@ -17,9 +17,9 @@ gonu
 오전 11:20 2025-11-21
 docker ps
 
-docker run --name my-postgres -e POSTGRES_USER=kogo -e POSTGRES_PASSWORD=math1106 -e POSTGRES_DB=mydb -p 5433:5432 -d postgres:14
+docker run --name my-postgres -e POSTGRES_USER=kkw -e POSTGRES_PASSWORD=qwe123 -e POSTGRES_DB=mydb -p 5432:5432 -d postgres:14
 
-포트 확인
+5432 포트 확인
 netstat -ano | findstr :5432
 
 이미 열려있으면 포트 번호 바꿔야함
@@ -28,3 +28,15 @@ netstat -ano | findstr :5432
 docker exec -it my-postgres psql -U kogo -d mydb
 
 psql -U kogo -d mydb
+
+
+**다른 DB 사용**
+
+redis
+
+docker run --name redis-server -p 6379:6379 -d redis
+
+
+MongoDB
+
+docker run -d -p 27017:27017 --name my-mongo mongo
