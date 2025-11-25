@@ -30,7 +30,11 @@ docker exec -it my-postgres psql -U kogo -d mydb
 psql -U kogo -d mydb
 
 
+<<<<<<<< HEAD:backend/dockerSetting.txt
 **다른 DB 사용**
+========
+----------
+>>>>>>>> aa27e288adf1bef8a1e28eeff21a65720d3b99ef:backend/python/dockerSetting.txt
 
 redis
 
@@ -40,3 +44,7 @@ docker run --name redis-server -p 6379:6379 -d redis
 MongoDB
 
 docker run -d -p 27017:27017 --name my-mongo mongo
+<<<<<<<< HEAD:backend/dockerSetting.txt
+========
+
+>>>>>>>> aa27e288adf1bef8a1e28eeff21a65720d3b99ef:backend/python/dockerSetting.txt
