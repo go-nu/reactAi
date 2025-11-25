@@ -4,7 +4,9 @@ import { EmployeeInfo } from "@/redux/slice/employeeSlice";
 
 // FastAPI GraphQL 서버 주소 (uvicorn 기본 포트는 8000)
 // 필요하면 본인 환경에 맞게 수정
-const GRAPH_URL = "http://localhost:8080/graphql";
+const GRAPH_URL = "/graphql";
+// const GRAPH_URL = "http://127.0.0.1:8000/graphql";
+
 
 // 공통 GraphQL 응답 타입
 type GraphQLResponse<T> = {
@@ -211,10 +213,12 @@ export const fetchDeleteEmployeeInfoById = createAsyncThunk<
     "employeeApi/fetchDeleteEmployeeInfo",
     async (id, thunkAPI) => {
         const mutation = `
-      mutation DeleteEmployee($id: ID!) {
-        deleteEmployee(id: $id)
-      }
-    `;
+          mutation DeleteEmployee($id: ID!) {
+            deleteEmployee(id: $id)
+          }
+        `;
+
+        console.log(id)
 
         try {
             const { data } = await axios.post<
