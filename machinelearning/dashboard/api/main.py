@@ -23,4 +23,4 @@ def root():
         "message": "FastAPI, GraphQL, flask/Dash",
         "graphql": "/app_graphql",
         "dashboard": "/dashboard/",
-}
+    }
