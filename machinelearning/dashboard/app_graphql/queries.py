@@ -11,14 +11,12 @@ from .types import SalesViewRow
 
 @strawberry.type
 class Query:
+    # 전체 데이터 조회용 Query
     @strawberry.field
     def sales_view_all(
         self,
         limit: int = 20000,
     ) -> List[SalesViewRow]:
-        """
-        전체 데이터 조회용 Query
-        """
         sql = """
             SELECT
                 date_id,

@@ -108,9 +108,9 @@ dash_app.layout = html.Div(
                         dcc.Dropdown(
                             id="category-filter",
                             options=[
-                                {"label": "소분류", "value": "productName"},
-                                {"label": "중뷴류", "value": "productCategoryName"},
                                 {"label": "대분류", "value": "categoryName"},
+                                {"label": "중분류", "value": "productCategoryName"},
+                                {"label": "소분류", "value": "productName"},
                             ],
                             value="categoryName",
                             placeholder="카테고리 선택",

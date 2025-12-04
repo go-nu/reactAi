@@ -1,9 +1,6 @@
 import pandas as pd
 import numpy as np
 
-
-
-
 if __name__ == "__main__":
     sales = pd.read_excel("./data/Sales.xlsx", sheet_name="Sheet1")
     details = pd.read_excel("./data/Details.xlsx", sheet_name=None)
