@@ -1,6 +1,5 @@
 from pythermalcomfort.models import utci
 
-
 # 구름량 -> delta 계산
 def estimate_delta_from_clouds(cloud_pct: float) -> float:
     cloud_pct = max(0.0, min(100.0, cloud_pct))
@@ -13,7 +12,7 @@ def estimate_tmrt(Ta: float, cloud_pct: float) -> float:
     return Ta + delta
 
 # UTCI 계산
-def calculate_utci(
+def weather_to_utci(
     Ta: float, # 기온 (°C)
     RH: float, # 상대습도 (%)
     Va: float, # 풍속 (m/s)
@@ -24,23 +23,23 @@ def calculate_utci(
 
     # 2) UTCI 계산
     utci_value = utci(
-        tdb=Ta, # dry-bulb temperature
-        tr=Tmrt, # mean radiant temperature
-        v=Va, # wind speed
-        rh=RH # relative humidity
+        tdb=Ta,
+        tr=Tmrt,
+        v=Va,
+        rh=RH
     )
 
-    return utci_value
+    return float(utci_value.utci)
 
 
 if __name__ == "__main__":
-    Ta = 4.0 # °C
-    RH = 79.0 # %
+    Ta = 35.0 # °C
+    RH = 90.0 # %
     # 1m/s = 3.6km/h
-    Va = 3.3 # m/s
-    clouds = 99.0 # %
+    Va = 1.3 # m/s
+    clouds = 5.0 # %
 
-    utci_val = calculate_utci(Ta, RH, Va, clouds)
+    utci_val = weather_to_utci(Ta, RH, Va, clouds)
 
     print(f"UTCI = {utci_val.utci:.2f} °C")
 
