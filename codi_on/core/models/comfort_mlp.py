@@ -30,12 +30,15 @@ class ComfortMLP(nn.Module):
 
     def _get_activation(self, name: str):
         name = name.lower()
+
         if name == "relu":
             return nn.ReLU()
-        elif name == "tanh":
-            return nn.Tanh()
         elif name == "gelu":
             return nn.GELU()
+        elif name == "silu" or name == "swish":
+            return nn.SiLU()
+        elif name == "tanh":
+            return nn.Tanh()
         else:
             raise ValueError(f"Unsupported activation: {name}")
 

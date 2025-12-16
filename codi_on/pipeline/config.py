@@ -15,7 +15,7 @@ TRAIN_CONFIG = {
 
     # early stopping
     "early_stopping": True,
-    "es_patience": 20, # 개선 없으면 기다리는 epoch 수
-    "es_min_delta": 2e-4, # 최소 개선량
-    "es_monitor": "loss" # loss | acc
+    "es_patience": 20, # epoch 기준
+    "es_min_delta": 2e-4, # 최소 변화량
+    "es_monitor": "loss", # loss | acc
 }
