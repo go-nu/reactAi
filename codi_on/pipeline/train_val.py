@@ -24,7 +24,7 @@ def set_seed(seed=42):
     torch.backends.cudnn.benchmark = False
 
 class ComfortDataset(Dataset):
-    def __init__(self, csv_path: str, use_ap: bool):
+    def __init__(self, csv_path: str, use_ap: bool, use_tanh_target: bool):
         self.df = pd.read_csv(csv_path)
         self.use_ap = use_ap
 
@@ -46,6 +46,9 @@ class ComfortDataset(Dataset):
         self.X = torch.tensor(self.X, dtype=torch.float32)
         self.y = torch.tensor(self.y, dtype=torch.float32).unsqueeze(1)
 
+        if use_tanh_target:
+            self.y = self.y * 2.0 - 1.0
+
     def __len__(self):
         return len(self.y)
 
@@ -55,6 +58,8 @@ class ComfortDataset(Dataset):
 def get_loss_function(cfg):
     if cfg["loss"] == "mse":
         return nn.MSELoss()
+    elif cfg["loss"] == "mae":
+        return nn.L1Loss()
     else:
         raise ValueError(f"Unsupported loss: {cfg['loss']}")
 
@@ -99,13 +104,12 @@ def get_optimizer(model, cfg):
         )
 
 class EarlyStopping:
-    def __init__(self, patience=10, min_delta=0.0, mode="min"):
+    def __init__(self, patience=10, min_delta=0.0):
         self.patience = patience
         self.min_delta = min_delta
-        self.mode = mode
-        self.best = None
         self.counter = 0
-        self.should_stop = False
+        self.best = None
+        self.stop = False
 
     def step(self, value):
         if self.best is None:
@@ -117,8 +121,9 @@ class EarlyStopping:
             self.counter = 0
         else:
             self.counter += 1
-            if self.counter >= self.patience:
-                self.stop = True
+
+        if self.counter >= self.patience:
+            self.stop = True
 
         return self.stop
 
@@ -129,14 +134,18 @@ def train():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
 
+    # tanh 사용을 위한 target normalization
+    use_tanh_target = (cfg["activation"] == "tanh")
     # Dataset & Loader
     train_dataset = ComfortDataset(
         csv_path=os.path.join(DATA_DIR, "train.csv"),
-        use_ap=cfg["use_ap"]
+        use_ap=cfg["use_ap"],
+        use_tanh_target=use_tanh_target
     )
     val_dataset = ComfortDataset(
         csv_path=os.path.join(DATA_DIR, "val.csv"),
-        use_ap=cfg["use_ap"]
+        use_ap=cfg["use_ap"],
+        use_tanh_target=use_tanh_target
     )
 
     train_loader = DataLoader(
@@ -172,10 +181,11 @@ def train():
     train_losses = []
     val_losses = []
 
-    best_loss = float("inf")
-    best_acc = 0.0
+    best_train_loss = None # 결과 저장용 변수
+    best_val_loss = float("inf") # 비교용 변수
     best_epoch = -1
-    best_state = None # ⭐ best model(= 가장 성능이 좋았던 epoch) 저장
+    best_state = None # best model(= 가장 성능이 좋았던 epoch) 저장
+    stop_epoch = -1
 
     # 한 줄로 print되는 epoch 갯수
     LOG_INTERVAL = max(1, 10)
@@ -226,6 +236,7 @@ def train():
             best_val_loss = val_loss
             best_epoch = epoch + 1
             best_state = model.state_dict()
+            best_train_loss = train_loss
 
         # ---- Early Stopping ----
         if es and es.step(val_loss):
@@ -233,15 +244,23 @@ def train():
             print(f"🛑 Early stopping at epoch {stop_epoch}")
             break
 
+    # std 10개 고정
+    # k = 10
+    # last_k = min(k, len(val_losses))
+    # val_loss_std = np.std(val_losses[-last_k:])
+    val_loss_std = np.std(val_losses)
+
     # Save best model
     os.makedirs("artifacts", exist_ok=True)
-    model.load_state_dict(best_state)
-    torch.save(model.state_dict(), "artifacts/model_best.pt")
+    # model.load_state_dict(best_state)
+    # torch.save(model.state_dict(), "artifacts/model.pt")
 
     print("\n=== Training Summary ===")
-    print(f"Best epoch     : {best_epoch}")
-    print(f"Best val loss  : {best_val_loss:.4f}")
-    print(f"Stopped epoch  : {stop_epoch}")
+    print(f"Best epoch : {best_epoch}")
+    print(f"Best val loss : {best_val_loss:.4f}")
+    print(f"Best train loss : {best_train_loss:.4f}")
+    print(f"Stopped epoch : {stop_epoch}")
+    print(f"Val loss std : {val_loss_std:.6f}")
 
     elapsed = time.time() - start_time
     print(f"⏱ Total time: {elapsed:.2f}s")
@@ -258,5 +277,5 @@ def train():
     plt.show()
 
 if __name__ == "__main__":
-    set_seed(42)
+    set_seed(0)
     train()
