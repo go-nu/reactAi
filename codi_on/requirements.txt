@@ -2,3 +2,7 @@ numpy
 pandas
 matplotlib
 pythermalcomfort
+
+pydantic
+fastapi
+uvicorn
