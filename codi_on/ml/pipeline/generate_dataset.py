@@ -7,7 +7,6 @@ from ml.core.features.utci import weather_to_utci
 from ml.core.features.cloth_properties import get_cloth_properties
 from ml.core.scoring.compute_comfort import compute_comfort_score
 
-
 def build_environment_context(weather: dict) -> dict:
     utci = weather_to_utci(
         Ta=weather["Ta"],
@@ -36,16 +35,15 @@ def build_environment_context(weather: dict) -> dict:
         "weather_type": weather_type,
     }
 
-
 def build_clothing_response(cloth: dict) -> dict:
-    r_ct, r_et, ap = get_cloth_properties(
+    props = get_cloth_properties(
         c_ratio=cloth["cotton_ratio"]
     )
 
     return {
-        "R_ct": r_ct,
-        "R_et": r_et,
-        "AP": ap,
+        "R_ct": props["R_ct"],
+        "R_et": props["R_et"],
+        "AP": props["AP"],
         "thickness": cloth["thickness"],
         "usage": cloth["usage"],
     }
@@ -59,9 +57,20 @@ def generate_dataset() -> pd.DataFrame:
     usages = ["indoor", "outdoor"]
 
     Ta_list = range(-10, 36, 5)
-    RH_list = range(30, 91, 5)
+    RH_list = range(30, 91, 10)
     Va_list = np.arange(0.5, 8.1, 1.5)
-    cloud_list = range(0, 91, 10)
+    cloud_list = range(0, 91, 15)
+
+    temp_ranges = [4, 9, 14]
+
+    weather_mains = ["Clear", "Clouds", "Rain", "Snow"]
+    def allowed_weather_mains(Ta: float):
+        mains = ["Clear", "Clouds"]
+        if Ta > 0:
+            mains.append("Rain")   # 0도 이상이면 비 가능
+        else:
+            mains.append("Snow")   # 0도 이하면 눈 가능
+        return mains
 
     for c_ratio, thickness, usage in itertools.product(
         cotton_ratios, thickness_levels, usages
@@ -75,49 +84,56 @@ def generate_dataset() -> pd.DataFrame:
         for Ta, RH, Va, cloud in itertools.product(
             Ta_list, RH_list, Va_list, cloud_list
         ):
-            weather = {
-                "Ta": Ta,
-                "RH": RH,
-                "Va": Va,
-                "cloud": cloud,
-                "weather_main": "etc",
-                "temp_min": Ta - 4,
-                "temp_max": Ta + 4,
-            }
+            for tr in temp_ranges:
+                for wm in allowed_weather_mains(Ta):
+                    weather = {
+                        "Ta": Ta,
+                        "RH": RH,
+                        "Va": Va,
+                        "cloud": cloud,
+                        "weather_main": wm,
+                        "temp_min": Ta - tr / 2,
+                        "temp_max": Ta + tr / 2,
+                    }
 
-            env = build_environment_context(weather)
+                    env = build_environment_context(weather)
 
-            if env["UTCI"] < -40 or env["UTCI"] > 46:
-                continue
+                    if env["UTCI"] < -40 or env["UTCI"] > 46:
+                        continue
 
-            comfort_score = compute_comfort_score(
-                environment_context=env,
-                clothing_response=clothing_response,
-            )
+                    comfort_score = compute_comfort_score(
+                        environment_context=env,
+                        clothing_response=clothing_response,
+                    )
 
-            rows.append({
-                "C_ratio": c_ratio,
-                "R_ct": clothing_response["R_ct"],
-                "R_et": clothing_response["R_et"],
-                "AP": clothing_response["AP"],
-                "thickness": thickness,
-                "usage": usage,
+                    rows.append({
+                        "C_ratio": c_ratio,
+                        "R_ct": clothing_response["R_ct"],
+                        "R_et": clothing_response["R_et"],
+                        "AP": clothing_response["AP"],
+                        "thickness": thickness,
+                        "usage": usage,
 
-                "Ta": Ta,
-                "RH": RH,
-                "Va": Va,
-                "cloud": cloud,
-                "UTCI": env["UTCI"],
-                "temp_range": env["temp_range"],
-                "weather_type": env["weather_type"],
+                        "Ta": Ta,
+                        "RH": RH,
+                        "Va": Va,
+                        "cloud": cloud,
+                        "UTCI": env["UTCI"],
+                        "temp_range": env["temp_range"],
+                        "weather_type": env["weather_type"],
 
-                "comfort_score": comfort_score,
-            })
+                        "comfort_score": comfort_score,
+                    })
 
     return pd.DataFrame(rows)
 
-
 if __name__ == "__main__":
+    csv_path = "../data/raw/dataset.csv"
+    df = pd.read_csv(csv_path)
+    print("comfort_score min:", df["comfort_score"].min())
+    print("comfort_score max:", df["comfort_score"].max())
+
+    exit()
     SAVE_PATH = "../data/raw"
     os.makedirs(SAVE_PATH, exist_ok=True)
 
