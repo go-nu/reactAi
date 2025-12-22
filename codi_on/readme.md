@@ -1,4 +1,5 @@
 가상환경 접속
+설정 -> 인터프리터 로컬 가상환경(.venv) 생성
 .\.venv\Scripts\activate
 
 pip install -r requirements.txt

@@ -2,6 +2,7 @@ numpy
 pandas
 matplotlib
 pythermalcomfort
+torch
 
 pydantic
 fastapi
