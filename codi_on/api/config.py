@@ -10,7 +10,7 @@ MODEL_CONFIG = {
     "input_dim": 3,
     # "use_ap": False,
     "hidden_dims": [32, 16],
-    "activation": "gelu",
+    "activation": "relu",
     "dropout": 0.1,
 }
 

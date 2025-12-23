@@ -34,11 +34,14 @@ class ComfortDataset(Dataset):
         for _, row in self.df.iterrows():
             features = build_feature_vector(
                 c_ratio=row["C_ratio"],
+                thickness=row["thickness"],
+                usage=row["usage"],
                 Ta=row["Ta"],
                 RH=row["RH"],
                 Va=row["Va"],
                 cloud=row["cloud"],
-                use_ap=self.use_ap,
+                temp_range=row["temp_range"],
+                weather_type=row["weather_type"],
             )
             self.X.append(features)
             self.y.append(row["comfort_score"])
@@ -278,5 +281,5 @@ def train():
     plt.show()
 
 if __name__ == "__main__":
-    set_seed(100)
+    set_seed()
     train()

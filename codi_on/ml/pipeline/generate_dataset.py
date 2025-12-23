@@ -48,7 +48,6 @@ def build_clothing_response(cloth: dict) -> dict:
         "usage": cloth["usage"],
     }
 
-
 def generate_dataset() -> pd.DataFrame:
     rows = []
 
@@ -130,8 +129,8 @@ def generate_dataset() -> pd.DataFrame:
 if __name__ == "__main__":
     csv_path = "../data/raw/dataset.csv"
     df = pd.read_csv(csv_path)
-    print("comfort_score min:", df["comfort_score"].min())
-    print("comfort_score max:", df["comfort_score"].max())
+    print("comfort_score min:", df["UTCI"].min())
+    print("comfort_score max:", df["UTCI"].max())
 
     exit()
     SAVE_PATH = "../data/raw"

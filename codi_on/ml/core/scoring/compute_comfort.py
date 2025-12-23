@@ -66,7 +66,6 @@ def compute_comfort_score(
     R_et_n = clamp(R_et / 15.0)
     AP_n = clamp(AP / 100.0)
 
-
     if demand_type == "neutral":
         # 열 스트레스 없음 → 옷 차이 거의 반영 안 됨
         mismatch = 0.0
