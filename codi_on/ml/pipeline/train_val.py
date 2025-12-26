@@ -24,9 +24,8 @@ def set_seed(seed=42):
     torch.backends.cudnn.benchmark = False
 
 class ComfortDataset(Dataset):
-    def __init__(self, csv_path: str, use_ap: bool, use_tanh_target: bool):
+    def __init__(self, csv_path: str, use_tanh_target: bool):
         self.df = pd.read_csv(csv_path)
-        self.use_ap = use_ap
 
         self.X = []
         self.y = []
@@ -134,7 +133,10 @@ def train():
     start_time = time.time()
     cfg = TRAIN_CONFIG
 
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device(
+        "cuda" if torch.cuda.is_available() else "mps"
+        if torch.backends.mps.is_available() else "cpu"
+    )
     print(f"Using device: {device}")
 
     # tanh 사용을 위한 target normalization
@@ -142,12 +144,10 @@ def train():
     # Dataset & Loader
     train_dataset = ComfortDataset(
         csv_path=os.path.join(DATA_DIR, "train.csv"),
-        use_ap=cfg["use_ap"],
         use_tanh_target=use_tanh_target
     )
     val_dataset = ComfortDataset(
         csv_path=os.path.join(DATA_DIR, "val.csv"),
-        use_ap=cfg["use_ap"],
         use_tanh_target=use_tanh_target
     )
 
@@ -244,7 +244,7 @@ def train():
         # ---- Early Stopping ----
         if es and es.step(val_loss):
             stop_epoch = epoch + 1
-            print(f"🛑 Early stopping at epoch {stop_epoch}")
+            print(f"Early stopping at epoch {stop_epoch}")
             break
 
     # std 범위 설정
@@ -267,7 +267,7 @@ def train():
     print(f"Val loss std : {val_loss_std:.6f}")
 
     elapsed = time.time() - start_time
-    print(f"⏱ Total time: {elapsed:.2f}s")
+    print(f"Total time: {elapsed:.2f}s")
 
     plt.figure(figsize=(6, 4))
     plt.plot(train_losses, label="Train Loss")
@@ -281,5 +281,5 @@ def train():
     plt.show()
 
 if __name__ == "__main__":
-    set_seed(0)
+    set_seed()
     train()

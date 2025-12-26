@@ -1,6 +1,5 @@
 TRAIN_CONFIG = {
     "input_dim": 11,
-    "use_ap": False,
     "hidden_dims": [32, 16],
     "activation": "tanh",
     "dropout": 0.1,
