@@ -1,14 +1,6 @@
 from ml.core.features.cloth_properties import get_cloth_properties
 from ml.core.features.utci import weather_to_utci
 
-def encode_usage(usage: str) -> int:
-    if usage == "indoor":
-        return 0
-    elif usage == "outdoor":
-        return 1
-    else:
-        raise ValueError("Unknown usage")
-
 def one_hot_weather(weather_type: str) -> list:
     mapping = {
         "clear": [1, 0, 0, 0],
@@ -22,8 +14,7 @@ def one_hot_weather(weather_type: str) -> list:
 
 def build_feature_vector(
         c_ratio: float,
-        thickness: float,
-        usage: str,
+        thickness: str,
         Ta: float,
         RH: float,
         Va: float,
@@ -31,13 +22,11 @@ def build_feature_vector(
         temp_range: float,
         weather_type: str
 ) -> list:
-    props = get_cloth_properties(c_ratio)
+    props = get_cloth_properties(c_ratio, thickness)
     clothing_response = [
         props["R_ct"],
         props["R_et"],
         props["AP"],
-        thickness,
-        encode_usage(usage),
     ]
 
     utci = weather_to_utci(Ta, RH, Va, cloud)

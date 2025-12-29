@@ -1,7 +1,7 @@
 TRAIN_CONFIG = {
-    "input_dim": 11,
+    "input_dim": 9,
     "hidden_dims": [32, 16],
-    "activation": "tanh",
+    "activation": "relu",
     "dropout": 0.1,
 
     "batch_size": 32,

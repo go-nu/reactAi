@@ -68,11 +68,11 @@ def test():
     for k, v in metrics.items():
         print(f"{k}: {v:.4f}")
 
-    # pd.DataFrame({
-    #     "gt": targets.squeeze(),
-    #     "pred": predicts.squeeze(),
-    #     "error": predicts.squeeze() - targets.squeeze(),
-    # }).to_csv("../artifacts/test_predict.csv", index=False)
+    pd.DataFrame({
+        "gt": targets.squeeze(),
+        "pred": predicts.squeeze(),
+        "error": predicts.squeeze() - targets.squeeze(),
+    }).to_csv("../artifacts/test_predict.csv", index=False)
 
 if __name__ == "__main__":
     test()
