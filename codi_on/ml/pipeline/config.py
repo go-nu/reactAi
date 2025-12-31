@@ -4,11 +4,12 @@ TRAIN_CONFIG = {
     "activation": "relu",
     "dropout": 0.1,
 
-    "batch_size": 32,
+    "batch_size": 64,
     "epochs": 100,
 
-    "optimizer": "adam",
-    "learning_rate": 1e-3,
+    "optimizer": "adamw",
+    "weight_decay": 1e-2,
+    "learning_rate": 1e-4,
 
     "loss": "mse",
 

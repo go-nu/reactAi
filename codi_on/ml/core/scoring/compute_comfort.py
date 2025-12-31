@@ -1,6 +1,8 @@
+# 최소값 보다 작으면 최소값으로, 최대값 보다 크면 최대값으로
 def clamp(x, minx=0.0, maxx=1.0):
     return max(min(x, maxx), minx)
 
+# min-max normalization
 def minmaxnorm(x, minx, maxx):
     if maxx <= minx:
         return 0.0
@@ -54,11 +56,11 @@ def compute_comfort_score(
     ret_score = minmaxnorm(1.0 / max(r_et_eff, 1e-6), 0.05, 0.20)
     ap_score = minmaxnorm(ap_eff, 30.0, 300.0)
     moisture_release = clamp(0.6 * ret_score + 0.4 * ap_score)
-
+    # 추위의 score 최대치 제한
     cold_target = clamp(0.50 + 0.40 * cold_eff)
     under_insulation = max(0.0, cold_target - insulation_cap)
     cold_penalty = cold_eff * under_insulation
-
+    # 더위의 score 최소치 제한
     heat_max = clamp(0.50 - 0.30 * heat_eff)
     over_insulation = max(0.0, insulation_cap - heat_max)
     heat_penalty = heat_eff * over_insulation
