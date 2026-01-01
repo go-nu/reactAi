@@ -1,15 +1,15 @@
 TRAIN_CONFIG = {
     "input_dim": 9,
     "hidden_dims": [32, 16],
-    "activation": "relu",
+    "activation": "gelu",
     "dropout": 0.1,
 
     "batch_size": 64,
     "epochs": 100,
 
     "optimizer": "adamw",
-    "weight_decay": 1e-2,
-    "learning_rate": 1e-4,
+    "weight_decay": 1e-4,
+    "learning_rate": 1e-3,
 
     "loss": "mse",
 
