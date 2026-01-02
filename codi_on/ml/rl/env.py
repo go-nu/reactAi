@@ -15,38 +15,13 @@ class ClothingRecommendEnv:
 
         self.state = None
 
-    # state 반환
-    def reset(self) -> Dict[str, Any]:
-        self.state = self._build_state()
-        return self.state
-
-    # bandit 구조
-    # 다음 상태 없이 한번 실행 = 하나의 보상
-    def step(self, action: int, reward: float):
-        done = True # one-shot decision
-        info = {
-            "selected_cloth": self.state["candidates"][action]
-        }
-        return self.state, reward, done, info
-
-    # state 구성
-    # 고정된 날씨에서 후보들의 comfort score를 계산하여
-    # dict 구조에 담음
-    def _build_state(self) -> Dict[str, Any]:
-        candidate_states = []
-
-        for cloth in self.candidates:
-            comfort = compute_comfort_score(
-                environment_context = self.weather,
-                clothing_response = cloth["cloth_props"],
-            )
-
-            candidate_states.append({
-                "cloth_id": cloth["cloth_id"],
-                "comfort_score": comfort,
-            })
-
+    def build_state(self) -> Dict[str, Any]:
         return {
-            "environment": self.weather,
-            "candidates": candidate_states,
+            "candidates": [
+                {
+                    "cloth_id": c["cloth_id"],
+                    "comfort_score": c["comfort_score"],
+                }
+                for c in self.candidates
+            ]
         }

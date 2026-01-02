@@ -18,21 +18,19 @@ class EpsilonGreedyBandit:
             random.seed(self.seed)
 
     def action(self, state: Dict[str, Any]) -> int:
-        candidates: List[Dict[str, Any]] = state["candidates"]
-        if not candidates:
-            raise ValueError("No candidates found")
-
+        candidates = state["candidates"]
         # exploration
         if random.random() < self.epsilon:
             return random.randrange(len(candidates))
-
         # exploitation
         best_idx = 0
-        best_value = float("inf")
+        best_value = float("-inf")
 
         for idx, c in enumerate(candidates):
             cloth_id = c["cloth_id"]
             q = self.values.get(cloth_id, 0.0)
+            if not candidates:
+                raise ValueError("No candidates found")
 
             if q > best_value:
                 best_value = q
@@ -40,14 +38,23 @@ class EpsilonGreedyBandit:
 
         return best_idx
 
-    def update(self, selected_cloth_id: int, reward: float) -> None:
-        n = self.counts.get(selected_cloth_id, 0) + 1
-        q_old = self.values.get(selected_cloth_id, 0.0)
+    # def update(self, selected_cloth_id: int, reward: float) -> None:
+    #     n = self.counts.get(selected_cloth_id, 0) + 1
+    #     q_old = self.values.get(selected_cloth_id, 0.0)
+    #
+    #     q_new = q_old + (reward - q_old) / n
+    #
+    #     self.counts[selected_cloth_id] = n
+    #     self.values[selected_cloth_id] = q_new
 
-        q_new = q_old + (reward - q_old) / n
+    def update_from_rewards(self, rewards: Dict[int, float]) -> None:
+        for cloth_id, reward in rewards.items():
+            n = self.counts.get(cloth_id, 0) + 1
+            q_old = self.values.get(cloth_id, 0.0)
+            q_new = q_old + (reward - q_old) / n
 
-        self.counts[selected_cloth_id] = n
-        self.values[selected_cloth_id] = q_new
+            self.counts[cloth_id] = n
+            self.values[cloth_id] = q_new
 
     def get_stats(self) -> Dict[int, Dict[str, float]]:
         out = {}

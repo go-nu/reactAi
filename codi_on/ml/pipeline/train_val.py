@@ -280,5 +280,5 @@ def train():
     plt.show()
 
 if __name__ == "__main__":
-    set_seed()
+    set_seed(0)
     train()

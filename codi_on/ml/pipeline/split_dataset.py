@@ -80,5 +80,5 @@ if __name__ == "__main__":
         output_dir=OUTPUT_DIR,
         train_ratio=0.8,
         val_ratio=0.1,
-        seed=42,
+        seed=0,
     )

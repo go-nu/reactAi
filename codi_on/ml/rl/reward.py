@@ -1,11 +1,14 @@
-# 사용자 피드백을 점수로 바꾸는 로직
-# 실제 로직에 맞춰 추후 수정
-def feedback_to_reward(feedback: str) -> float:
-    if feedback == "like":
-        return 1.0
-    elif feedback == "neutral":
-        return 0.0
-    elif feedback == "dislike":
-        return -1.0
-    else:
-        raise Exception(f"Unknown feedback: {feedback}")
+from typing import Optional
+
+def compute_reward(
+        recommend_clothes: list,
+        selected_cloth_ids: list,
+        feedback: float,
+):
+    rewards = {}
+    for cloth in recommend_clothes:
+        rewards[cloth["cloth_id"]] = feedback * 0.3
+    for cloth_id in selected_cloth_ids:
+        rewards[cloth_id] += 1.0
+
+    return rewards
