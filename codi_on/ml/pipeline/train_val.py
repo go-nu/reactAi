@@ -42,7 +42,7 @@ class ComfortDataset(Dataset):
                 weather_type=row["weather_type"],
             )
             self.X.append(features)
-            self.y.append(row["blendRatioScore"])
+            self.y.append(row["comfort_score"])
 
         self.X = torch.tensor(self.X, dtype=torch.float32)
         self.y = torch.tensor(self.y, dtype=torch.float32).unsqueeze(1)
