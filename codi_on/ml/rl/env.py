@@ -20,7 +20,7 @@ class ClothingRecommendEnv:
             "candidates": [
                 {
                     "cloth_id": c["cloth_id"],
-                    "comfort_score": c["comfort_score"],
+                    "blendRatioScore": c["blendRatioScore"],
                 }
                 for c in self.candidates
             ]

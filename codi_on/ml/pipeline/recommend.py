@@ -10,7 +10,7 @@ def split_strata(
 
     items = sorted(
         candidates,
-        key=lambda x: x["comfort_score"],
+        key=lambda x: x["blendRatioScore"],
         reverse=True,
     )
 
@@ -44,7 +44,7 @@ def recommend(candidates, weather, user_context):
             "candidates": [
                 {
                     "cloth_id": c["cloth_id"],
-                    "comfort_score": c["comfort_score"],
+                    "blendRatioScore": c["blendRatioScore"],
                 }
                 for c in group
             ]

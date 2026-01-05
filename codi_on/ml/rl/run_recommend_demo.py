@@ -19,16 +19,16 @@ environment = {
 # 2. 더미 의복 후보 (이미 comfort 계산 전 단계)
 # -------------------------
 clothes = [
-    {"cloth_id": 1, "comfort_score": 0.82},
-    {"cloth_id": 2, "comfort_score": 0.77},
-    {"cloth_id": 3, "comfort_score": 0.73},
-    {"cloth_id": 4, "comfort_score": 0.65},
-    {"cloth_id": 5, "comfort_score": 0.60},
-    {"cloth_id": 6, "comfort_score": 0.55},
-    {"cloth_id": 7, "comfort_score": 0.48},
-    {"cloth_id": 8, "comfort_score": 0.42},
-    {"cloth_id": 9, "comfort_score": 0.38},
-    {"cloth_id": 10, "comfort_score": 0.31},
+    {"cloth_id": 1, "blendRatioScore": 0.82},
+    {"cloth_id": 2, "blendRatioScore": 0.77},
+    {"cloth_id": 3, "blendRatioScore": 0.73},
+    {"cloth_id": 4, "blendRatioScore": 0.65},
+    {"cloth_id": 5, "blendRatioScore": 0.60},
+    {"cloth_id": 6, "blendRatioScore": 0.55},
+    {"cloth_id": 7, "blendRatioScore": 0.48},
+    {"cloth_id": 8, "blendRatioScore": 0.42},
+    {"cloth_id": 9, "blendRatioScore": 0.38},
+    {"cloth_id": 10, "blendRatioScore": 0.31},
 ]
 
 user_context = {

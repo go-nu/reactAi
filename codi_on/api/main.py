@@ -16,7 +16,7 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
     if request.url.path == BATCH_PATH:
         return JSONResponse(
             status_code=200,
-            content={"results": [{"item_id": 0, "comfort_score": None, "error": "VALIDATION_ERROR"}]},
+            content={"results": [{"clothingId": 0, "blendRatioScore": None, "error": "VALIDATION_ERROR"}]},
         )
 
     # 그 외는 일반적으로 400/422로 내려도 되는데, 네 요구가 "터지지 않게"가 핵심이면 400 고정
@@ -28,7 +28,7 @@ async def unhandled_exception_handler(request: Request, exc: Exception):
     if request.url.path == BATCH_PATH:
         return JSONResponse(
             status_code=200,
-            content={"results": [{"item_id": 0, "comfort_score": None, "error": "INTERNAL_ERROR"}]},
+            content={"results": [{"clothingId": 0, "blendRatioScore": None, "error": "INTERNAL_ERROR"}]},
         )
 
     # 다른 엔드포인트는 정상적으로 500

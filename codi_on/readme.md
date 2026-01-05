@@ -15,3 +15,4 @@ m1/pipeline/train.py
 
 서버 실행
 python -m uvicorn api.main:app --reload
+python -m uvicorn api.main:app --port 8001

@@ -111,7 +111,7 @@ def generate_dataset() -> pd.DataFrame:
                         "temp_range": env["temp_range"],
                         "weather_type": env["weather_type"],
 
-                        "comfort_score": comfort_score,
+                        "blendRatioScore": comfort_score,
                     })
 
     return pd.DataFrame(rows)
@@ -130,5 +130,5 @@ if __name__ == "__main__":
     exit()
     csv_path = "../data/raw/dataset.csv"
     df = pd.read_csv(csv_path)
-    print("comfort_score min:", df["UTCI"].min())
-    print("comfort_score max:", df["UTCI"].max())
+    print("blendRatioScore min:", df["UTCI"].min())
+    print("blendRatioScore max:", df["UTCI"].max())
