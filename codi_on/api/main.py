@@ -3,10 +3,12 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 
+from api.routers import rerank
 from api.routers.predict import router as comfort_router
 
 app = FastAPI(title="CodiON AI API")
 app.include_router(comfort_router)
+app.include_router(rerank.router)
 
 BATCH_PATH = "/comfort/batch"
 
@@ -33,3 +35,4 @@ async def unhandled_exception_handler(request: Request, exc: Exception):
 
     # 다른 엔드포인트는 정상적으로 500
     return JSONResponse(status_code=500, content={"detail": "Internal Server Error"})
+
