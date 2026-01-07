@@ -3,12 +3,10 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 
-from api.routers import rerank
 from api.routers.predict import router as comfort_router
 
 app = FastAPI(title="CodiON AI API")
 app.include_router(comfort_router)
-app.include_router(rerank.router)
 
 BATCH_PATH = "/comfort/batch"
 

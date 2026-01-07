@@ -15,4 +15,10 @@ m1/pipeline/train.py
 
 서버 실행
 python -m uvicorn api.main:app --reload
+
+실행 순서:
+서로 다른 로컬 터미널에서
+API 2 먼저 실행
 python -m uvicorn api.main:app --port 8001
+API 1 이후 실행
+python -m uvicorn api.main:app --port 8002

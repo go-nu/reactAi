@@ -1,13 +1,11 @@
 def rerank_candidates(
     candidates,
-    user_insulation_bias,
+    user_insulation_bias,  # == userBias
     alpha=0.1,
 ):
     for c in candidates:
-        # 옷의 방향: (-) 얇음 ← 0.5 → (+) 두꺼움
-        direction = c.insulation_cap - 0.5
-
-        adjustment = - user_insulation_bias * direction
+        # itemBias: [-1, +1]
+        adjustment = user_insulation_bias * c.itemBias
 
         c.rank_score = c.comfort_score + alpha * adjustment
 

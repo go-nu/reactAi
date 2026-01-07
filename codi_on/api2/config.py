@@ -1,0 +1,1 @@
+RERANK_ALPHA = 0.15
