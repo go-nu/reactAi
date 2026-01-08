@@ -9,13 +9,13 @@ from ml.core.scoring.compute_comfort import compute_comfort_score
 
 def build_environment_context(weather: dict) -> dict:
     utci = weather_to_utci(
-        Ta=weather["Ta"],
-        RH=weather["RH"],
-        Va=weather["Va"],
-        cloud_pct=weather["cloud"],
+        Ta=weather["temperature"],
+        RH=weather["humidity"],
+        Va=weather["windSpeed"],
+        cloud_pct=weather["cloudAmount"],
     )
 
-    temp_range = weather["temp_max"] - weather["temp_min"]
+    temp_range = weather["maxTemperature"] - weather["minTemperature"]
 
     weather_main = weather["weather_main"].lower()
     if weather_main in ["rain", "drizzle", "thunderstorm"]:
@@ -32,7 +32,7 @@ def build_environment_context(weather: dict) -> dict:
     return {
         "UTCI": utci,
         "temp_range": temp_range,
-        "weather_type": weather_type,
+        "sky": weather_type,
     }
 
 def generate_dataset() -> pd.DataFrame:
@@ -76,13 +76,13 @@ def generate_dataset() -> pd.DataFrame:
             for tr in temp_ranges:
                 for wm in allowed_weather_mains(Ta):
                     weather = {
-                        "Ta": Ta,
-                        "RH": RH,
-                        "Va": Va,
-                        "cloud": cloud,
+                        "temperature": Ta,
+                        "humidity": RH,
+                        "windSpeed": Va,
+                        "cloudAmount": cloud,
                         "weather_main": wm,
-                        "temp_min": Ta - tr / 2,
-                        "temp_max": Ta + tr / 2,
+                        "minTemperature": Ta - tr / 2,
+                        "maxTemperature": Ta + tr / 2,
                     }
 
                     env = build_environment_context(weather)
@@ -103,13 +103,13 @@ def generate_dataset() -> pd.DataFrame:
                         "R_et": clothing_response["R_et"],
                         "AP": clothing_response["AP"],
 
-                        "Ta": Ta,
-                        "RH": RH,
-                        "Va": Va,
-                        "cloud": cloud,
+                        "temperature": Ta,
+                        "humidity": RH,
+                        "windSpeed": Va,
+                        "cloudAmount": cloud,
                         "UTCI": env["UTCI"],
                         "temp_range": env["temp_range"],
-                        "weather_type": env["weather_type"],
+                        "sky": env["sky"],
 
                         "blendRatioScore": comfort_score,
                     })

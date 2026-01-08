@@ -34,10 +34,10 @@ class ComfortDataset(Dataset):
         for _, row in self.df.iterrows():
             features = build_feature_vector(
                 c_ratio=row["C_ratio"],
-                Ta=row["Ta"],
-                RH=row["RH"],
-                Va=row["Va"],
-                cloud=row["cloud"],
+                Ta=row["temperature"],
+                RH=row["humidity"],
+                Va=row["windSpeed"],
+                cloud=row["cloudAmount"],
                 use_ap=self.use_ap,
             )
 

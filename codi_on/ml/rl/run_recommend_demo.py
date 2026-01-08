@@ -12,7 +12,7 @@ from ml.rl.reward import compute_reward
 environment = {
     "UTCI": 12.0,
     "temp_range": 8.0,
-    "weather_type": "clear",
+    "sky": "clear",
 }
 
 # -------------------------

@@ -13,7 +13,7 @@ def comfort_health():
 def comfort_batch(req: ComfortBatchRequest):
     # batch는 “응답 200 유지”가 목표
     results = predict_comfort_batch(req.context, req.items)
-    return ComfortBatchResult(results=results)
+    return ComfortBatchResult(results=results or [])
 
 @router.post("/test/rerank-ml1")
 def test_rerank_ml1():

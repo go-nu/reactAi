@@ -15,7 +15,7 @@ def compute_comfort_score(
 ) -> float:
     utci = environment_context["UTCI"]
     temp_range = environment_context["temp_range"]
-    weather_type = environment_context["weather_type"]
+    weather_type = environment_context["sky"]
 
     WEATHER_MULTIPLIER = {
         "clear": 1.00,

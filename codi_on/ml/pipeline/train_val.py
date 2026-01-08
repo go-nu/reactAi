@@ -34,12 +34,12 @@ class ComfortDataset(Dataset):
             features = build_feature_vector(
                 c_ratio=row["C_ratio"],
                 thickness=row["thickness"],
-                Ta=row["Ta"],
-                RH=row["RH"],
-                Va=row["Va"],
-                cloud=row["cloud"],
+                Ta=row["temperature"],
+                RH=row["humidity"],
+                Va=row["windSpeed"],
+                cloud=row["cloudAmount"],
                 temp_range=row["temp_range"],
-                weather_type=row["weather_type"],
+                weather_type=row["sky"],
             )
             self.X.append(features)
             self.y.append(row["comfort_score"])

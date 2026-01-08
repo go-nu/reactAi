@@ -55,13 +55,13 @@ def predict_comfort_batch(
 
     results: List[Result] = []
 
-    temp_range = context.temp_max - context.temp_min
-    weather_type = normalize_weather(context.weather_type)
+    temp_range = context.maxTemperature - context.minTemperature
+    weather_type = normalize_weather(context.sky)
 
-    print("[DEBUG] temp_max:", context.temp_max)
-    print("[DEBUG] temp_min:", context.temp_min)
+    print("[DEBUG] maxTemperature:", context.maxTemperature)
+    print("[DEBUG] minTemperature:", context.minTemperature)
     print("[DEBUG] temp_range(calculated):", temp_range)
-    print("[DEBUG] weather_type(normalized):", weather_type)
+    print("[DEBUG] sky(normalized):", weather_type)
 
     for it in items:
         print("\n[DEBUG] item:", it)
@@ -73,10 +73,10 @@ def predict_comfort_batch(
             feature = build_feature_vector(
                 c_ratio=it.c_ratio,
                 thickness=thickness,
-                Ta=context.Ta,
-                RH=context.RH,
-                Va=context.Va,
-                cloud=context.cloud,
+                Ta=context.temperature,
+                RH=context.humidity,
+                Va=context.windSpeed,
+                cloud=context.cloudAmount,
                 temp_range=temp_range,
                 weather_type=weather_type,
             )

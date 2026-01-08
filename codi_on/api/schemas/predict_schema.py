@@ -3,15 +3,15 @@ from pydantic import BaseModel, Field
 
 
 class Context(BaseModel):
-    Ta: float = Field(..., description="Air temperature")
-    RH: float = Field(..., description="Relative humidity")
-    Va: float = Field(..., description="Wind speed")
-    cloud: float = Field(..., description="Cloud amount")
+    temperature: float = Field(..., description="Air temperature")
+    humidity: float = Field(..., description="Relative humidity")
+    windSpeed: float = Field(..., description="Wind speed")
+    cloudAmount: float = Field(..., description="Cloud amount")
 
-    temp_max: float = Field(..., description="Daily max temperature")
-    temp_min: float = Field(..., description="Daily min temperature")
+    maxTemperature: float = Field(..., description="Daily max temperature")
+    minTemperature: float = Field(..., description="Daily min temperature")
 
-    weather_type: str = Field(..., description="Weather type (clear/cloudy/rain/snow)")
+    sky: str = Field(..., description="Weather type (clear/cloudy/rain/snow)")
 
 class Item(BaseModel):
     clothingId: int
