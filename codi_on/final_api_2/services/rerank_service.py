@@ -13,19 +13,12 @@ def rerank_items(user_bias: float, items: list[dict]) -> list[dict]:
             f"itemBias={it['itemBias']}"
         )
 
-    def rank_key(item: dict) -> float:
-        rank_score = item["score"] + ALPHA * user_bias * item["itemBias"]
+    for it in items:
+        rank_score = it["score"] + ALPHA * user_bias * it["itemBias"]
         print(
             f"[DEBUG][API2] rank_score "
-            f"(id={item['clothingId']}): {rank_score}"
-        )
-        return rank_score
-
-    sorted_items = sorted(items, key=rank_key, reverse=True)
-
-    print("[DEBUG][API2] items (sorted order):")
-    for it in sorted_items:
-        print(f"  - id={it['clothingId']} score={it['score']}")
+            f"(id={it['clothingId']}): {rank_score}"
+    )
 
     print("[DEBUG][API2] ===== Rerank End =====\n")
 
@@ -34,5 +27,5 @@ def rerank_items(user_bias: float, items: list[dict]) -> list[dict]:
             "clothingId": it["clothingId"],
             "score": it["score"],
         }
-        for it in sorted_items
+        for it in items
     ]

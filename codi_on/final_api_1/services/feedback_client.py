@@ -1,24 +1,20 @@
-# api/services/feedback_client.py
-
-def fetch_feedback_logs(model_type: str):
-    # 피드백 api 받는 코드
-
-    return []
-
-'''
+import os
 import requests
 
-JAVA_FEEDBACK_API = "http://backend/internal/feedback/logs"
+JAVA_BACKEND_URL = os.getenv(
+    "JAVA_BACKEND_URL",
+    "http://127.0.0.1:8080"
+)
 
-def fetch_feedback_logs(model_type: str, user_id: int):
+def fetch_feedback_logs(user_id: int, model_type: str) -> list:
     resp = requests.get(
-        JAVA_FEEDBACK_API,
+        f"{JAVA_BACKEND_URL}/api/feedback/logs", # java api
         params={
             "userId": user_id,
             "modelType": model_type,
-            "days": 30
-        }
+            "days": 30,
+        },
+        timeout=3,
     )
     resp.raise_for_status()
-    return resp.json()["logs"]
-'''
+    return resp.json()

@@ -1,5 +1,6 @@
 from typing import List
 import torch
+from datetime import datetime
 
 from api.config import DEVICE
 from api.schemas.predict_schema import Context, Item, Result
@@ -25,6 +26,7 @@ WEATHER_MAP = {
     "SNOW": "snow",
 }
 
+today_str = datetime.now().strftime("%Y-%m-%d")
 
 def normalize_thickness(thickness: str) -> str:
     return THICKNESS_LOWER[thickness.upper()]
@@ -91,9 +93,9 @@ def predict_comfort_batch(
 
             print("[DEBUG] raw_score:", raw_score)
 
-            comfort_score = score_0_1_to_0_100(raw_score)
-            # comfort_score = raw_score
-            print("[DEBUG] comfort_score(0~100):", comfort_score)
+            # comfort_score = score_0_1_to_0_100(raw_score)
+            comfort_score = raw_score
+            print("[DEBUG] comfort_score:", comfort_score)
 
             results.append(
                 Result(

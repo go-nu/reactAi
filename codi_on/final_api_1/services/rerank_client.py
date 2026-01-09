@@ -2,7 +2,7 @@ import os
 import requests
 
 # 로컬 / 도커 겸용
-API2_BASE_URL = os.getenv("API2_BASE_URL", "http://127.0.0.1:8001")
+API2_BASE_URL = os.getenv("API2_BASE_URL", "http://127.0.0.1:8002")
 
 def rerank_with_api2(scored_items: list, user_bias: float, item_bias_map: dict):
     payload = {

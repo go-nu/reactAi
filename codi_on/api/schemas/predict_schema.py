@@ -1,7 +1,6 @@
 from typing import List, Optional
 from pydantic import BaseModel, Field
 
-
 class Context(BaseModel):
     temperature: float = Field(..., description="Air temperature")
     humidity: float = Field(..., description="Relative humidity")
@@ -29,3 +28,4 @@ class Result(BaseModel):
 
 class ComfortBatchResult(BaseModel):
     results: List[Result]
+    date: str

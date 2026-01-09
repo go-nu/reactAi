@@ -23,5 +23,5 @@ python -m uvicorn api2.main:app --port 8001
 API 1 이후 실행
 python -m uvicorn api.main:app --port 8002
 
-python -m uvicorn final_api_2.main:app --port 8001
-python -m uvicorn final_api_1.main:app --port 8000
+python -m uvicorn final_api_2.main:app --port 8002
+python -m uvicorn final_api_1.main:app --port 8001

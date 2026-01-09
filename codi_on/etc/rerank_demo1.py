@@ -136,6 +136,7 @@ def rerank_candidates(candidates, userBias, alpha):
         c.rank_score = c.score + alpha * userBias * c.itemBias
 
     return sorted(candidates, key=lambda x: x.rank_score, reverse=True)
+
 # =========================
 # 9. 실행 (리스트 비교용 출력)
 # =========================

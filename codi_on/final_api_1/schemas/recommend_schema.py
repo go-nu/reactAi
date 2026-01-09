@@ -26,7 +26,7 @@ class RecommendRequest(BaseModel):
 class RecommendResult(BaseModel):
     clothingId: int
     blendRatioScore: Optional[float] = None
-    # error: Optional[str] = None
 
 class RecommendResponse(BaseModel):
+    date: Optional[str] = None
     results: List[RecommendResult]
